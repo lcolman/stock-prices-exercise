@@ -16,14 +16,39 @@ public class AlgorithmTest {
     }
 
     /**
+     * Problem requirements are that the sale and purchase must have at least
+     * one 'hold' time period (index of the problem array) in-between them.
+     */
+    @Test
+    public void shouldNotBuyAndSellImmediately() {
+        int[] naiveProblem = {2, 10};
+        int expected = 0;
+        int answer = algorithm.calculateMaxProfit(naiveProblem);
+        assertThat(answer, is(expected));
+    }
+
+    /**
+     * Given the requirement that the sale and purchase must have at least
+     * one 'hold' time period in-between them, thi test ensures that no later
+     * sale is made after an ineligible high price during a hold period.
+     */
+    @Test
+    public void shouldNotBuyAndSellForLessAfterHighHoldPrice() {
+        int[] naiveProblem = {2, 10, 1, 1, 1};
+        int expected = 0;
+        int answer = algorithm.calculateMaxProfit(naiveProblem);
+        assertThat(answer, is(expected));
+    }
+
+    /**
      * The "naive" class of problems are those where the price values only ever
      * increase with time.  These problems can always be solved by just
      * subtracting the first array value from the last.
      */
     @Test
     public void shouldSolveNaiveProblemWithTwoPrices () {
-        int[] naiveProblem = {2, 10};
-        int expected = 8;
+        int[] naiveProblem = {2, 10, 20};
+        int expected = 18;
         int answer = algorithm.calculateMaxProfit(naiveProblem);
         assertThat(answer, is(expected));
     }
@@ -31,12 +56,12 @@ public class AlgorithmTest {
     /**
      * Although the first test above ensures the naive problem class is solved
      * properly, it does not test that the algorithm works with arrays of
-     * lengths greater than 2.  Therefore this is a longer naive problem array.
+     * lengths greater sizes.  Therefore this is a longer naive problem array.
      */
     @Test
     public void shouldSolveNaiveProblemWithFivePrices () {
-        int[] naiveProblem = {1, 2, 3, 4, 5};
-        int expected = 4;
+        int[] naiveProblem = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int expected = 8;
         int answer = algorithm.calculateMaxProfit(naiveProblem);
         assertThat(answer, is(expected));
     }
@@ -49,7 +74,7 @@ public class AlgorithmTest {
      */
     @Test
     public void shouldSolveLowHighLowerProblem () {
-        int[] lowHighLowerProblem = {3, 9, 2};
+        int[] lowHighLowerProblem = {3, 6, 9, 2};
         int expected = 6;
         int answer = algorithm.calculateMaxProfit(lowHighLowerProblem);
         assertThat(answer, is(expected));
@@ -165,7 +190,7 @@ public class AlgorithmTest {
      */
     @Test
     public void shouldSolveNaiveNegtiveProblem () {
-        int[] naiveNegativeTest = {-10,-2};
+        int[] naiveNegativeTest = {-10, -5,-2};
         int expected = 8;
         int answer = algorithm.calculateMaxProfit(naiveNegativeTest);
         assertThat(answer, is(expected));
